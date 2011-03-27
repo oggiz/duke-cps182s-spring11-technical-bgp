@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import javax.swing.JApplet;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import java.applet.Applet;
 import traceroute.*;
 import exceptions.*;
 
 /**
- * The applet that runs in the client's browser.
+ * The main applet that runs in the client's browser.
  */
-public class MainApplet extends JApplet
+public class MainApplet extends Applet
 {
 
 	public void init()
@@ -57,8 +58,17 @@ public class MainApplet extends JApplet
 
 	}
 
+	/**
+	 * Finds out what operating system the client is running and return the
+	 * correct kind of Traceroute.
+	 * @return the right Traceroute
+	 * @throws OSException
+	 */
 	private Traceroute getOSTraceroute() throws OSException
 	{
+		/*
+		 * Attempt to identify the operating system.
+		 */
 		String os = System.getProperty("os.name").toLowerCase();
 		if(os.matches(".*windows.*")) return new WindowsTraceroute();
 		else if(os.matches(".*linux.*")) return new LinuxTraceroute();
