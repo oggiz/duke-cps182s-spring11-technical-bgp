@@ -29,9 +29,11 @@ public abstract class Traceroute
 	/**
 	 * Runs traceroute, parses output and returns a list of TracerouteItems.
 	 * @param destination the destination hostname or IP
+	 * @param resolve whether to resolve hostnames or not
 	 * @return list of TracerouteItems
 	 */
-	public ArrayList<TracerouteItem> traceroute(String destination)
+	public ArrayList<TracerouteItem> traceroute(String destination,
+			boolean resolve)
 	{
 		/*
 		 * We will be adding TracerouteItems to the result array.
@@ -46,7 +48,7 @@ public abstract class Traceroute
 		/*
 		 * Obtain the correct command to run for this operating system. 
 		 */
-		String cmd = getTracerouteCommand(destination);
+		String cmd = getTracerouteCommand(destination, resolve);
 
 		try
 		{
@@ -75,7 +77,7 @@ public abstract class Traceroute
 		{
 			while((line = buf.readLine()) != null)
 			{
-				TracerouteItem item = parse(line);
+				TracerouteItem item = parse(line, resolve);
 				result.add(item);
 			}
 		}
@@ -99,13 +101,15 @@ public abstract class Traceroute
 	 * @param line one hop of traceroute
 	 * @return the correct TracerouteItem
 	 */
-	public abstract TracerouteItem parse(String line);
+	public abstract TracerouteItem parse(String line, boolean resolve);
 	
 	/**
 	 * Gets the proper traceroute command to run for this operating system.
 	 * @param destination the destination hostname or IP
+	 * @param resolve whether to resolve hostnames or not
 	 * @return the proper traceroute command
 	 */
-	public abstract String getTracerouteCommand(String destination);
+	public abstract String getTracerouteCommand(String destination,
+			boolean resolve);
 
 }

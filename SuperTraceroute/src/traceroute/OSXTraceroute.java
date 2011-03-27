@@ -1,10 +1,5 @@
 package traceroute;
 
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.net.InetAddress;
 import traceroute.TracerouteItem;
 
 /**
@@ -18,7 +13,7 @@ public class OSXTraceroute extends Traceroute
 		super();
 	}
 
-	public TracerouteItem parse(String line)
+	public TracerouteItem parse(String line, boolean resolve)
 	{
 		String hostname, address;
 
@@ -28,9 +23,15 @@ public class OSXTraceroute extends Traceroute
 		return new TracerouteItem(hostname, address);
 	}
 
-	public String getTracerouteCommand(String destination)
+	public String getTracerouteCommand(String destination, boolean resolve)
 	{
-		return "traceroute " + destination;
+		/*
+		 * For now, do not resolve hostnames.
+		 */
+		resolve = false;
+		
+		if(resolve) return "traceroute " + destination;
+		else return "traceroute -n " + destination;
 	}
 
 }
