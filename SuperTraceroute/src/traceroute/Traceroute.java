@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import traceroute.TracerouteItem;
+import traceroute.Hop;
 
 /**
  * An abstract class for running and parsing traceroute. Subclasses will
@@ -27,29 +27,34 @@ public abstract class Traceroute
 	}
 
 	/**
-	 * Runs traceroute, parses output and returns a list of TracerouteItems.
+	 * Runs traceroute, parses output and returns a list of hops.
 	 * @param destination the destination hostname or IP
 	 * @param resolve whether to resolve hostnames or not
-	 * @return list of TracerouteItems
+	 * @return list of hops
 	 */
-	public ArrayList<TracerouteItem> traceroute(String destination,
-			boolean resolve)
+	public ArrayList<Hop> traceroute(String destination, boolean resolve)
 	{
 		/*
 		 * We will be adding TracerouteItems to the result array.
 		 */
-		ArrayList<TracerouteItem> result = new ArrayList<TracerouteItem>();
-		
+		ArrayList<Hop> result = new ArrayList<Hop>();
+
 		/*
 		 * This is the process that will execute the command.
 		 */
 		Process pr = null;
-		
+
 		/*
 		 * Obtain the correct command to run for this operating system. 
 		 */
 		String cmd = getTracerouteCommand(destination, resolve);
 
+		// debug
+		System.out.println("before running exec");
+		
+		/*
+		 * Execute the traceroute command.
+		 */
 		try
 		{
 			pr = run.exec(cmd);
@@ -59,6 +64,18 @@ public abstract class Traceroute
 			/*
 			 * Something went wrong...
 			 */
+			e.printStackTrace();
+		}
+		
+		/*
+		 * Wait for the traceroute process to finish.
+		 */
+		try
+		{
+			pr.waitFor();
+		}
+		catch(InterruptedException e)
+		{
 			e.printStackTrace();
 		}
 
@@ -75,17 +92,21 @@ public abstract class Traceroute
 		String line = "";
 		try
 		{
-			while((line = buf.readLine()) != null)
+			String regex = getRegex();
+			while((line = buf.readLine()) != null && line.matches(regex))
 			{
-				TracerouteItem item = parse(line, resolve);
-				result.add(item);
+				System.out.println("in while loop");
+				String hostname, address;
+				
+				address = line.replaceAll(regex, "$1");
+				hostname = address;
+				
+				result.add(new Hop(hostname, address));
 			}
 		}
 		catch(IOException e)
 		{
-			/*
-			 * What could go wrong here?
-			 */
+			// TODO: how did we get here?
 			return null;
 		}
 
@@ -95,14 +116,16 @@ public abstract class Traceroute
 		return result;
 	}
 
-	/**
-	 * Extracts the necessary information from a line of output (one hop) of
-	 * traceroute and makes a TracerouteItem from it.
-	 * @param line one hop of traceroute
-	 * @return the correct TracerouteItem
-	 */
-	public abstract TracerouteItem parse(String line, boolean resolve);
+	public abstract String parseHostname(String line, boolean resolve);
+
+	public abstract String parseAddress(String line, boolean resolve);
 	
+	/**
+	 * Gets the regular expression to be used in parsing the output.
+	 * @return the regular expression
+	 */
+	public abstract String getRegex();
+
 	/**
 	 * Gets the proper traceroute command to run for this operating system.
 	 * @param destination the destination hostname or IP
