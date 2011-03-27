@@ -3,6 +3,7 @@ package main;
 import traceroute.ITraceroute;
 import traceroute.OSXTraceroute;
 import traceroute.TracerouteItem;
+import java.util.ArrayList;
 
 /**
  * The main program used to invoke the application.
@@ -14,7 +15,12 @@ public class Main
 	{
 		ITraceroute tr = new OSXTraceroute();
 		
-		TracerouteItem item = tr.traceroute();
+		ArrayList<TracerouteItem> l = tr.traceroute("www.google.com");
+		
+		for(TracerouteItem item : l)
+		{
+			System.out.println(item.toString());
+		}
 	}
 
 }
