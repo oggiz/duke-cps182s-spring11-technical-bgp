@@ -10,17 +10,20 @@ public class LinuxTraceroute extends Traceroute
 	{
 		super();
 	}
-
-	public Hop parse(String line, boolean resolve)
+	
+	@Override
+	public String getRegex()
 	{
-		String hostname, address;
-
-		address = line.trim().split("\\s+")[1];
-		hostname = address;
+		/*
+		 * A typical traceroute hop in Linux looks like:
+		 *  9  64.125.26.133  41.395 ms  41.375 ms  40.928 ms
+		 */
+		return "\\s*\\d+\\s+(\\d+\\.\\d+\\.\\d+\\.\\d+)\\s+.*";
 		
-		return new Hop(hostname, address);
+		// TODO: account for hops with dropped packets
 	}
 
+	@Override
 	public String getTracerouteCommand(String destination, boolean resolve)
 	{
 		/*

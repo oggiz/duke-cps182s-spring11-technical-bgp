@@ -1,7 +1,5 @@
 package traceroute;
 
-import traceroute.Hop;
-
 /**
  * Runs and parses traceroute in Mac OS X. Tested on OS X 10.6.7.
  */
