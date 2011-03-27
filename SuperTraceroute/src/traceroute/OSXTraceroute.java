@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import traceroute.TracerouteItem;
 
 /**
- * Runs and parses traceroute in Mac OS X.
+ * Runs and parses traceroute in Mac OS X. Tested on OS X 10.6.7.
  */
 public class OSXTraceroute implements ITraceroute
 {
