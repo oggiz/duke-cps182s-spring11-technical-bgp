@@ -16,7 +16,8 @@ public class TracerouteItem
 	private InetAddress address;
 
 	/*
-	 * The hostname, if resolvable, of this hop.
+	 * The hostname, if resolvable, of this hop. If not resolvable, then it is
+	 * the same as the IP address.
 	 */
 	private String hostname;
 
@@ -29,7 +30,9 @@ public class TracerouteItem
 		}
 		catch(UnknownHostException e)
 		{
-			// the IP address is ill-formatted
+			/*
+			 * The IP address must be ill-formatted.
+			 */
 			e.printStackTrace();
 		}
 	}

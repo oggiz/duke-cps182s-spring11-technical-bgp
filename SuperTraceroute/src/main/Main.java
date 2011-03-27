@@ -1,7 +1,7 @@
 package main;
 
 import traceroute.Traceroute;
-import traceroute.OSXTraceroute;
+import traceroute.WindowsTraceroute;
 import traceroute.TracerouteItem;
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		Traceroute tr = new OSXTraceroute();
+		Traceroute tr = new WindowsTraceroute();
 		
-		ArrayList<TracerouteItem> l = tr.traceroute("www.google.com");
+		ArrayList<TracerouteItem> l = tr.traceroute("www.google.com", false);
 		
 		for(TracerouteItem item : l)
 		{

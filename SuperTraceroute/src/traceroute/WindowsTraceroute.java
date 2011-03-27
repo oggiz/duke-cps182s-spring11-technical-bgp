@@ -1,9 +1,5 @@
 package traceroute;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import traceroute.TracerouteItem;
 
 /**
@@ -17,14 +13,26 @@ public class WindowsTraceroute extends Traceroute
 		super();
 	}
 	
-	public TracerouteItem parse(String line)
+	public TracerouteItem parse(String line, boolean resolve)
 	{
 		String hostname, address;
+		
+		String regex = ".*[\\s+|\\[](\\d+\\.\\d+\\.\\d+\\.\\d+)[$|\\s+|\\]].*";
+		
+		address = line.replaceAll(regex, "$1");
+		hostname = address;
+		
+		return new TracerouteItem(hostname, address);
 	}
 	
-	public String getTracerouteCommand(String destination)
+	public String getTracerouteCommand(String destination, boolean resolve)
 	{
-		return "tracert " + destination;
+		/*
+		 * For now, do not resolve hostnames.
+		 */
+		
+		if(resolve) return "tracert " + destination;
+		else return "tracert -d " + destination;
 	}
 
 }
