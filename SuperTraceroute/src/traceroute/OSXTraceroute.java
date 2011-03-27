@@ -1,6 +1,6 @@
 package traceroute;
 
-import traceroute.TracerouteItem;
+import traceroute.Hop;
 
 /**
  * Runs and parses traceroute in Mac OS X. Tested on OS X 10.6.7.
@@ -13,14 +13,14 @@ public class OSXTraceroute extends Traceroute
 		super();
 	}
 
-	public TracerouteItem parse(String line, boolean resolve)
+	public Hop parse(String line, boolean resolve)
 	{
 		String hostname, address;
 
 		hostname = line.split("\\s+")[1];
 		address = line.split("\\s+")[2].replaceAll("\\(|\\)", "");
 
-		return new TracerouteItem(hostname, address);
+		return new Hop(hostname, address);
 	}
 
 	public String getTracerouteCommand(String destination, boolean resolve)

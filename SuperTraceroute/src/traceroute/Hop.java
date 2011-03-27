@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
  * A class that represents one line of output (that is, one hop) from running
  * traceroute.
  */
-public class TracerouteItem
+public class Hop
 {
 
 	/*
@@ -21,17 +21,21 @@ public class TracerouteItem
 	 */
 	private String hostname;
 
-	public TracerouteItem(String hostname, String address)
+	public Hop(String destination, String address)
 	{
-		this.hostname = hostname;
+		hostname = destination;
+
 		try
 		{
+			/*
+			 * Attempt to parse the IP address.
+			 */
 			this.address = InetAddress.getByName(address);
 		}
 		catch(UnknownHostException e)
 		{
 			/*
-			 * The IP address must be ill-formatted.
+			 * The IP address is ill-formatted.
 			 */
 			e.printStackTrace();
 		}

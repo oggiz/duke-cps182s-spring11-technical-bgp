@@ -2,7 +2,7 @@ package main;
 
 import traceroute.Traceroute;
 import traceroute.WindowsTraceroute;
-import traceroute.TracerouteItem;
+import traceroute.Hop;
 import java.util.ArrayList;
 
 /**
@@ -15,9 +15,9 @@ public class Main
 	{
 		Traceroute tr = new WindowsTraceroute();
 		
-		ArrayList<TracerouteItem> l = tr.traceroute("www.google.com", false);
+		ArrayList<Hop> l = tr.traceroute("www.google.com", false);
 		
-		for(TracerouteItem item : l)
+		for(Hop item : l)
 		{
 			System.out.println(item.toString());
 		}
