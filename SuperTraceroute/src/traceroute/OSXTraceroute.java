@@ -10,59 +10,27 @@ import traceroute.TracerouteItem;
 /**
  * Runs and parses traceroute in Mac OS X. Tested on OS X 10.6.7.
  */
-public class OSXTraceroute implements ITraceroute
+public class OSXTraceroute extends Traceroute
 {
-
-	private Runtime run;
 
 	public OSXTraceroute()
 	{
-		run = Runtime.getRuntime();
+		super();
 	}
 
-	public ArrayList<TracerouteItem> traceroute(String destination)
+	public TracerouteItem parse(String line)
 	{
-		ArrayList<TracerouteItem> result = new ArrayList<TracerouteItem>();
-		Process pr = null;
-		String cmd = "traceroute " + destination;
+		String hostname, address;
 
-		try
-		{
-			pr = run.exec(cmd);
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+		hostname = line.split("\\s+")[1];
+		address = line.split("\\s+")[2].replaceAll("\\(|\\)", "");
 
-		BufferedReader buf = new BufferedReader(new InputStreamReader(
-				pr.getInputStream()));
+		return new TracerouteItem(hostname, address);
+	}
 
-		String line = "";
-		try
-		{
-			while((line = buf.readLine()) != null)
-			{
-				String hostname, address;
-
-				/*
-				 * Extract some useful information from the traceroute output.
-				 */
-				hostname = line.split("\\s+")[1];
-				address = line.split("\\s+")[2].replaceAll("\\(|\\)", "");
-
-				TracerouteItem item = new TracerouteItem(hostname, address);
-
-				result.add(item);
-			}
-		}
-		catch(IOException e)
-		{
-			// should throw an exception
-			return null;
-		}
-
-		return result;
+	public String getTracerouteCommand(String destination)
+	{
+		return "traceroute " + destination;
 	}
 
 }

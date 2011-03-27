@@ -29,6 +29,7 @@ public class TracerouteItem
 		}
 		catch(UnknownHostException e)
 		{
+			// the IP address is ill-formatted
 			e.printStackTrace();
 		}
 	}
