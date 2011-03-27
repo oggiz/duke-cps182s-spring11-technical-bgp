@@ -23,9 +23,9 @@ public class WindowsTraceroute extends Traceroute
 		 * A typical traceroute hop in Windows looks like:
 		 *   4     7 ms    12 ms    14 ms  24.93.64.84
 		 */
-		return "\\s+\\d+\\s+.*\\s+(\\d+\\.\\d+\\.\\d+\\.\\d+).*";
+		return "\\s*\\d+\\s+.*\\s+(\\d+\\.\\d+\\.\\d+\\.\\d+).*";
 		
-		// TODO: account for dropped packets
+		// TODO: account for hops with dropped packets
 	}
 
 	@Override

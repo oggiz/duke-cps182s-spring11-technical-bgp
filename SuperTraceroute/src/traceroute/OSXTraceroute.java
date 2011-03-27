@@ -13,14 +13,15 @@ public class OSXTraceroute extends Traceroute
 		super();
 	}
 
-	public Hop parse(String line, boolean resolve)
+	public String getRegex()
 	{
-		String hostname, address;
-
-		hostname = line.split("\\s+")[1];
-		address = line.split("\\s+")[2].replaceAll("\\(|\\)", "");
-
-		return new Hop(hostname, address);
+		/*
+		 * A typical traceroute hop in OS X looks like:
+		 *  5  24.93.64.25  14.747 ms  14.311 ms  14.104 ms
+		 */
+		return "\\s*\\d+\\s+(\\d+\\.\\d+\\.\\d+\\.\\d+)\\s+.*";
+		
+		// TODO: account for hops with dropped packets 
 	}
 
 	public String getTracerouteCommand(String destination, boolean resolve)
@@ -29,7 +30,7 @@ public class OSXTraceroute extends Traceroute
 		 * For now, do not resolve hostnames.
 		 */
 		resolve = false;
-		
+
 		if(resolve) return "traceroute " + destination;
 		else return "traceroute -n " + destination;
 	}

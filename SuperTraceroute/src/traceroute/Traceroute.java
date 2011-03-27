@@ -51,7 +51,7 @@ public abstract class Traceroute
 
 		// debug
 		System.out.println("before running exec");
-		
+
 		/*
 		 * Execute the traceroute command.
 		 */
@@ -66,7 +66,7 @@ public abstract class Traceroute
 			 */
 			e.printStackTrace();
 		}
-		
+
 		/*
 		 * Wait for the traceroute process to finish.
 		 */
@@ -93,14 +93,24 @@ public abstract class Traceroute
 		try
 		{
 			String regex = getRegex();
-			while((line = buf.readLine()) != null && line.matches(regex))
+			while((line = buf.readLine()) != null)
 			{
+				/*
+				 * If the line does not match the proper regular expression,
+				 * then skip it. 
+				 */
+				if(!line.matches(regex)) continue;
+
+				// debug
 				System.out.println("in while loop");
-				String hostname, address;
 				
+				/*
+				 * Parse the output.
+				 */
+				String hostname, address;
 				address = line.replaceAll(regex, "$1");
 				hostname = address;
-				
+
 				result.add(new Hop(hostname, address));
 			}
 		}
@@ -116,10 +126,6 @@ public abstract class Traceroute
 		return result;
 	}
 
-	public abstract String parseHostname(String line, boolean resolve);
-
-	public abstract String parseAddress(String line, boolean resolve);
-	
 	/**
 	 * Gets the regular expression to be used in parsing the output.
 	 * @return the regular expression
