@@ -36,6 +36,9 @@ public class MainApplet extends JApplet
 							System.out.println(l.toString());
 						}
 						
+						JLabel l = new JLabel("Count: " + list.size());
+						add(l);
+						
 					}
 					catch(Exception e)
 					{
