@@ -51,7 +51,7 @@ public class MainApplet extends Applet
 		catch(Exception e)
 		{
 			/*
-			 * Don't know what can go wrong to get here...
+			 * TODO: figure out what could have gone wrong to get here
 			 */
 			e.printStackTrace();
 		}
