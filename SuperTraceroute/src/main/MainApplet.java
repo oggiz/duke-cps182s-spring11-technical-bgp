@@ -28,16 +28,22 @@ public class MainApplet extends Applet
 				{
 					try
 					{
+					    /*
+					     * Do a traceroute to www.duke.edu.
+					     */
 						Traceroute tr = getOSTraceroute();
 						ArrayList<Hop> list = 
 							tr.traceroute("www.duke.edu", false);
 						
+						/*
+						 * Print hops.
+						 */
 						for(Hop l : list)
 						{
 							System.out.println(l.toString());
 						}
 						
-						JLabel l = new JLabel("Count: " + list.size());
+						JLabel l = new JLabel("Hops: " + list.size());
 						add(l);
 						
 					}
@@ -64,7 +70,7 @@ public class MainApplet extends Applet
 	 * @return the right Traceroute
 	 * @throws OSException
 	 */
-	private Traceroute getOSTraceroute() throws OSException
+	public static Traceroute getOSTraceroute() throws OSException
 	{
 		/*
 		 * Attempt to identify the operating system.
